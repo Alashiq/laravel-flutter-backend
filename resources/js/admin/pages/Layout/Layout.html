@@ -1,0 +1,17 @@
+
+    <div v-if="loadAuth" class="w-full">
+        <!-- Side Menu -->
+        <App-Side></App-Side>
+        <!-- End Side Menu -->
+
+        <!-- Left Part -->
+        <div class="relative md:mr-64">
+            <!-- Header Bar -->
+            <App-Header></App-Header>
+            <!-- End Header Bar -->
+            <router-view></router-view>
+        </div>
+        <!-- End Left Part -->
+        <Loading-Box v-if="loading == true"></Loading-Box>
+    </div>
+    <div v-else></div>

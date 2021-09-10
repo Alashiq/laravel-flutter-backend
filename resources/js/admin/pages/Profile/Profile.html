@@ -1,0 +1,179 @@
+
+    <div class="w-auto md:p-8 p-4">
+        <!-- Inside Page -->
+
+        <div class="w-full bg-white shadow-2 lg:px-8 md:px-6 px-4 py-4">
+            <div
+                class="text-2xl font-bold h-20 flex items-center justify-start border-b"
+            >
+                الملف الشخصي
+            </div>
+
+            <!-- User Photo -->
+            <div class="md:flex items-center my-8">
+                <img
+                    class="h-52 w-52 border md:mx-px mx-auto"
+                    :src="user.photo"
+                />
+
+                <!-- Input File -->
+                <div
+                    class="h-16 w-32 bg-blue-200 md:mr-4 md:ml-0 md:my-0 mx-auto my-4"
+                >
+                    <input
+                        type="file"
+                        v-on:change="onChange"
+                        class="cursor-pointer absolute block h-16 w-32 opacity-0 pin-r pin-t"
+                    />
+                    <span
+                        class="ml-2 bg-blue-400 h-16 w-32 text-white flex items-center justify-center rounded shadow cursor-pointer hover:bg-blue-500 text-lg"
+                    >
+                        <i class="fas fa-folder-plus ml-2"></i>
+                        إختر الصورة</span
+                    >
+                </div>
+                <!-- End Input File -->
+            </div>
+            <div class="flex items-center h-20">
+                <div
+                    @click="changePhoto"
+                    class="btn-color-one rounded shadow px-12 h-12 w-auto flex items-center justify-center text-white text-lg cursor-pointer"
+                >
+                    تحديث
+                </div>
+            </div>
+            <!-- End User Photo -->
+
+            <!-- User Information -->
+            <div class=" border-b border-t">
+                <div class="text-2xl text-gray-600 font-medium mt-12">
+                    البيانات الشخصية
+                </div>
+                <div class="mt-4 lg:h-16 lg:flex items-center">
+                    <div class="md:w-48 h-8 text-lg text-gray-600">
+                        إسم المستخدم
+                    </div>
+                    <div class="16">
+                        <input
+                            type="text"
+                            class="border rounded h-12 lg:w-96 w-full px-4 text-lg text-gray-700"
+                            v-on:change="validateName"
+                            v-model="formData.name"
+                        />
+                        <div
+                            class="h-6 text-sm text-red-400 mr-2 flex items-center"
+                        >
+                            {{ formValidate.name }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 lg:h-16 lg:flex items-center">
+                    <div class="md:w-48 h-8 text-lg text-gray-600">
+                        إسم الدخول
+                    </div>
+                    <div
+                        class="border rounded h-12 lg:w-96 w-full px-4 text-lg text-gray-700 flex items-center bg-gray-100"
+                    >
+                        {{ user.username }}
+                    </div>
+                </div>
+
+                <div class="mt-4 lg:h-16 lg:flex items-center">
+                    <div class="md:w-48 h-8 text-lg text-gray-600">
+                        دور الحساب
+                    </div>
+                    <div
+                        class="border rounded h-12 lg:w-96 w-full px-4 text-lg text-gray-700 flex items-center bg-gray-100"
+                    >
+                        {{ user.role }}
+                    </div>
+                </div>
+
+                <div class="flex items-center h-20">
+                    <div
+                        @click="changeName"
+                        class="btn-color-one rounded shadow px-12 h-12 w-auto flex items-center justify-center text-white text-lg cursor-pointer"
+                    >
+                        تحديث
+                    </div>
+                </div>
+            </div>
+            <!-- End User Information -->
+
+            <!-- Change Password -->
+            <div>
+                <div class="text-2xl text-gray-600 font-medium mt-12">
+                    تغيير كلمة المرور
+                </div>
+                <div class="mt-4 lg:h-16 lg:flex items-center">
+                    <div class="md:w-48 h-8 text-lg text-gray-600">
+                        كلمة المرور الحالية
+                    </div>
+                    <div class="16">
+                        <input
+                            type="password"
+                            class="border rounded h-12 lg:w-96 w-full px-4 text-lg text-gray-700"
+                            v-on:change="validateOldPassword"
+                            v-model="formData.oldPassword"
+                        />
+                        <div
+                            class="h-6 text-sm text-red-400 mr-2 flex items-center"
+                        >
+                            {{ formValidate.oldPassword }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 lg:h-16 lg:flex items-center">
+                    <div class="md:w-48 h-8 text-lg text-gray-600">
+                        كلمة المرور الجديدة
+                    </div>
+                    <div class="16">
+                        <input
+                            type="password"
+                            class="border rounded h-12 lg:w-96 w-full px-4 text-lg text-gray-700"
+                            v-on:change="validateNewPassword"
+                            v-model="formData.newPassword"
+                        />
+                        <div
+                            class="h-6 text-sm text-red-400 mr-2 flex items-center"
+                        >
+                            {{ formValidate.newPassword }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 lg:h-16 lg:flex items-center">
+                    <div class="md:w-48 h-8 text-lg text-gray-600">
+                        تأكيد كلمة المرور
+                    </div>
+                    <div class="16">
+                        <input
+                            type="password"
+                            class="border rounded h-12 lg:w-96 w-full px-4 text-lg text-gray-700"
+                            v-on:change="validateConfirmPassword"
+                            v-model="formData.confirmPassword"
+                        />
+                        <div
+                            class="h-6 text-sm text-red-400 mr-2 flex items-center"
+                        >
+                            {{ formValidate.confirmPassword }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center h-20">
+                    <div
+                        @click="changePassword"
+                        class="btn-color-one rounded shadow px-12 h-12 w-auto flex items-center justify-center text-white text-lg cursor-pointer"
+                    >
+                        تحديث
+                    </div>
+                </div>
+            </div>
+            <!-- End Change Password -->
+        </div>
+
+        <!-- End Inside Page -->
+    </div>

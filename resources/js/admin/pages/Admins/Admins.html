@@ -1,0 +1,142 @@
+
+    <div class="w-auto md:p-8 p-4">
+        <!-- Inside Page -->
+
+        <!-- List Header -->
+
+        <div class="flex justify-between w-full h-16 items-center">
+            <div class="text-2xl font-semibold cairo text-gray-600">
+                مشرفي الموقع
+            </div>
+            <router-link
+                v-show="$parent.checkPermission('CreateAdmin') == true"
+                to="/admin/admin/new"
+                class="rounded px-4 flex items-center cairo font-medium add-btn"
+            >
+                <span class="h-12 flex items-center">
+                    <i class="fas fa-plus ml-4 text-lg"></i>
+                    أضف مشرف
+                </span>
+            </router-link>
+        </div>
+
+        <div class="flex justify-between my-8">
+            <!-- Filter -->
+            <div
+                class="border rounded font-semibold cairo flex bg-center text-gray-700"
+            >
+                <div
+                    v-for="(item, index) in filter"
+                    :key="index"
+                    :class="{
+                        'h-12 px-4 flex cursor-pointer items-center ': 1 == 1,
+                        'bg-white ': item.link == activeFilter,
+                        'rounded-r ': index == 0,
+                        ' rounded-l border-l-0 ': index == filter.length - 1,
+                        'border-l ': index != filter.length - 1
+                    }"
+                    @click="changeFilter(item.link)"
+                >
+                    {{ item.name }}
+                </div>
+            </div>
+            <!-- End felter -->
+        </div>
+        <!-- End List Header -->
+
+        <table class="w-full" v-if="loaded && filterAdmin.length != 0">
+            <tr class="h-12 text-lg font-bold text-gray-600">
+                <td class="w-12 text-center">#</td>
+                <td class="sm:table-cell hidden">الصورة</td>
+                <td class="lg:table-cell hidden">الإسم</td>
+                <td class="">إسم الدخول</td>
+                <td class="xl:table-cell hidden">الحالة</td>
+                <td class="xl:table-cell hidden">تاريخ الإنشاء</td>
+                <td class="rounded-l-lg">الإجراءات</td>
+            </tr>
+
+            <tr
+                v-for="(item, index) in filterAdmin"
+                :key="index"
+                class="h-24 bg-white shadow-2 rounded-lg text-lg text-gray-600 font-medium hover:bg-gray-50"
+            >
+                <td class="w-12 text-center rounded-r-lg">{{ item.id }}</td>
+                <td class="sm:table-cell hidden">
+                    <img :src="item.photo" class="h-16 w-16" alt="" />
+                </td>
+                <td class="lg:table-cell hidden">
+                    {{ item.name.substring(0, 10) }}
+                </td>
+                <td>{{ item.username }}</td>
+                <td class="xl:table-cell hidden">
+                    <div
+                        v-if="item.state == 1"
+                        class="bg-green-100 flex items-center justify-center rounded shadowa h-10 w-24 text-green-700 text-base"
+                    >
+                        نشط
+                    </div>
+                    <div
+                        v-else-if="item.state == 0"
+                        class="bg-yellow-100 flex items-center justify-center rounded shadows h-10 w-24 text-yellow-700 text-base"
+                    >
+                        غير نشط
+                    </div>
+                    <div
+                        v-else
+                        class="bg-red-100 flex items-center justify-center rounded shadow1d h-10 w-24 text-red-700 text-base"
+                    >
+                        محظور
+                    </div>
+                </td>
+                <td class="xl:table-cell hidden">
+                    {{ item.created_at.substring(0, 10) }}
+                </td>
+                <td class="rounded-l-lg h-20">
+                    <router-link :to="'/admin/admin/' + item.id">
+                        <i
+                            title="عرض بيانات المشرف"
+                            class="fas fa-eye px-4 py-2 see-btn rounded ml-2"
+                        ></i>
+                    </router-link>
+
+                    <i
+                        v-show="$parent.checkPermission('BannedAdmin') == true"
+                        title="حظر المشرف"
+                        v-if="item.state != 2"
+                        @click="bannedAdmin(item.id, index)"
+                        class="fas fa-ban px-4 py-2 delete-btn rounded ml-2"
+                    ></i>
+                    <i
+                        v-show="$parent.checkPermission('ActiveAdmin') == true"
+                        title="تفعيل المشرف"
+                        @click="activeAdmin(item.id, index)"
+                        v-if="item.state == 0"
+                        class="fas fa-lock-open px-4 py-2 green-btn rounded ml-2"
+                    ></i>
+                    <i
+                        v-show="
+                            $parent.checkPermission('DisActiveAdmin') == true
+                        "
+                        title="إلغاء تفعيل المشرف"
+                        @click="disActiveAdmin(item.id, index)"
+                        v-else-if="item.state == 1"
+                        class="fas fa-lock px-4 py-2 yellow-btn rounded ml-2"
+                    ></i>
+
+                    <router-link :to="'/admin/admin/' + item.id + '/edit'">
+                        <i
+                            v-show="
+                                $parent.checkPermission('EditRoleAdmin') == true
+                            "
+                            title="تعديل دور ا لمشرف"
+                            class="fas fa-user-shield px-4 py-2 pink-btn rounded"
+                        ></i>
+                    </router-link>
+                </td>
+            </tr>
+        </table>
+
+        <Empty-Box v-if="loaded && filterAdmin.length == 0"></Empty-Box>
+
+        <!-- End Inside Page -->
+    </div>
