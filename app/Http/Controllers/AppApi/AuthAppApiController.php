@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\AdminApi;
+namespace App\Http\Controllers\AppApi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Role;
+use App\Models\User;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,73 +14,84 @@ use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
 
-class AuthDashApiController extends Controller
+class AuthAppApiController extends Controller
 {
-
-    // Login Admin
-    public function login(Request $request)
-    {
-        $customer = Admin::where('username', $request->username)->first();
-
-        if (!$customer || !Hash::check($request->password, $customer->password)) {
-
-            return response()->json(['success' => false, 'message' => 'إسم المستخدم أو كلمة المرور غير صحيحة'], 400);
+    // Sign Up
+    public function create(Request $request){
+        if (Validator::make($request->all(), [
+            'phone' => 'unique:users',
+        ])->fails()) {
+            return response()->json(["success" => false, "message" => "رقم الهاتف مسجل مسبقا"], 400);
         }
 
-        if ($customer->state == 0) {
-            return response()->json(['success' => false, 'message' => 'هذا الحساب غير مفعل قم بالتواصل مع المسؤول لتفعيل حسابك'], 400);
-        } elseif ($customer->state == 2)
-            return response()->json(['success' => false, 'message' => 'هذا الحساب محظور ولا يمكن استخدامه مجددا'], 400);
+        if (Validator::make($request->all(), [
+            'phone' => 'required|numeric',
+        ])->fails()) {
+            return response()->json(["success" => false, "message" => "رقم الهاتف يجب ان يكون عبارة عن رقم ومكون من 10 أرقام"], 400);
+        }
 
-            $permissions = [];
-            foreach (config('global.permissions') as $name => $value) {
-                $boolVal = false;
-                for ($i = 0; $i < count($customer->role->permissions); $i++)
-                    if ($name == $customer->role->permissions[$i]) {
-                        $boolVal = true;
-                    }
-                array_push($permissions, ["name" => $name, "description" => $value, "state" => $boolVal]);
-            }
+        if (Validator::make($request->all(), [
+            'password' => 'required',
+        ])->fails()) {
+            return response()->json(["success" => false, "message" => "يجب عليك ادخال كلمة مرور"], 400);
+        }
+
+        $user = User::create([
+            'firstname' => $request['firstname'],
+            'lastname' => $request['lastname'],
+            'phone' => $request['phone'],
+            'password' => Hash::make($request['password']),
+            'gender' => $request['gender'],
+            'state' => 1,
+        ]);
+        return response()->json(['success' => true, 'message' => 'تم إنشاء هذا الحساب بنجاح'], 200);
+    }
+
+
+    
+
+
+    // Login
+    public function login(Request $request)
+    {
+        $user = User::where('phone', $request->phone)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+
+            return response()->json(['success' => false, 'message' => 'إسم المستخدم أو كلمة المرور غير صحيحة'], 401);
+        }
+
+        if ($user->state == 0) {
+            return response()->json(['success' => false, 'message' => 'هذا الحساب غير مفعل قم بالتواصل مع المسؤول لتفعيل حسابك'], 403);
+        } elseif ($user->state == 2)
+            return response()->json(['success' => false, 'message' => 'هذا الحساب محظور ولا يمكن استخدامه مجددا'], 401);
+
 
         return response()->json([
             'success' => true,
             'message' => 'تم تسجيل الدخول بنجاح',
             'user' => [
-                'id' => $customer->id,
-                'name' => $customer->name,
-                'username' => $customer->username,
-                'role' => $customer->role->name,
-                'photo' => $customer->photo,
-                'token' => $customer->createToken('website', ['role:admin'])->plainTextToken
+                'id' => $user->id,
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'gender' => $user->gender,
+                'photo' => $user->photo,
+                'token' => $user->createToken('website', ['role:user'])->plainTextToken
 
             ],
-            "permissions"=>$permissions
         ]);
     }
 
-    //  Get Admin Info
+    //  Check Auth
     public function profile(Request $request)
     {
-        $role=Role::find($request->user()->role_id);
-        if(!$role)
-        return response()->json(["success"=>false,"message"=>"هذا الحساب غير مرتبط بأي دور, قم بالتواصل مع المسؤول لإصلاح الخلل"],400);
+        $userData= $request->user()->makeHidden(['id','state','created_at','updated_at']);
 
-        $permissions = [];
-        foreach (config('global.permissions') as $name => $value) {
-            $boolVal = false;
-            for ($i = 0; $i < count($role->permissions); $i++)
-                if ($name == $role->permissions[$i]) {
-                    $boolVal = true;
-                }
-            array_push($permissions, ["name" => $name, "description" => $value, "state" => $boolVal]);
-        }
-
-        $request->user()->role=$role->name;
-        return response()->json(["success" => true, "message" => "مرحبا بالمستخدم", "user" => $request->user(),"permissions"=>$permissions]);
+        return response()->json(["success" => true, "message" => "مرحبا بالمستخدم", "user" => $userData]);
     }
 
 
-    //  Logout Admin
+    //  Logout
     public function logout(Request $request)
     {
         $user = $request->user();

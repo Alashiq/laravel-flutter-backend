@@ -59,6 +59,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/custom-route/api-home.php'));
 
+            // Api->Mobile App
+            Route::prefix('api')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/custom-route/api-app.php'));
+
 
             // Web->
             Route::middleware('web')
