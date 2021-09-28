@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
 
+
+
 class AuthAppApiController extends Controller
 {
     // Sign Up
@@ -103,11 +105,16 @@ class AuthAppApiController extends Controller
     //  Change Admin Name
     public function update(Request $request)
     {
-        if ($request->name) {
+        if ($request->firstname) {
             $user = $request->user()->update($request->only(
-                "name"
+                "firstname"
             ));
             return response()->json(["success" => true, "message" => "تم تحديث الإسم بنجاح", "user" => $request->user()]);
+        } elseif ($request->lastname) {
+            $user = $request->user()->update($request->only(
+                "lastname"
+            ));
+            return response()->json(["success" => true, "message" => "تم تحديث اللقب بنجاح", "user" => $request->user()]);
         } elseif ($request->oldPassword && $request->newPassword) {
 
             if (!Hash::check($request->oldPassword, $request->user()->password)) {
@@ -123,12 +130,9 @@ class AuthAppApiController extends Controller
     }
 
 
-    //  Change Admin Photo
+    //  Change User Photo
     public function updatePhoto(Request $request)
     {
-
-
-
         if (Validator::make($request->all(), [
             'file' => 'required',
         ])->fails()) {

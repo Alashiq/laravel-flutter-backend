@@ -26,6 +26,8 @@ Route::prefix('app')->group(function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('/auth', [AuthAppApiController::class, 'profile']);
             Route::get('/logout', [AuthAppApiController::class, 'logout']);
+            Route::put('/', [AuthAppApiController::class, 'update']);
+            Route::post('/photo', [AuthAppApiController::class, 'updatePhoto']);
         });
         # # # # # # # # # # # # # # # End User # # # # # # # # # # # # # # # 
 
