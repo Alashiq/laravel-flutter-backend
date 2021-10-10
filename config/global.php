@@ -21,5 +21,13 @@ return [
         'CreateRole'=>'إنشاء دور جديد',
         'EditRole'=>'تعديل دور',
         'DeleteRole'=>'حذف دور',
+        // User Permission
+        'ReadUser'=>'مشاهدة المستخدمين',
+        'CreateUser'=>'إضافة مستخدم',
+        'ActiveUser'=>'تفعيل مستخدم',
+        'DisActiveUser'=>'إلغاء تفعيل مستخدم',
+        'BannedUser'=>'حظر مستخدم',
+        'ResetPasswordUser'=>'تهيئة كلمة مرور المشرف',
+
     ]
 ];

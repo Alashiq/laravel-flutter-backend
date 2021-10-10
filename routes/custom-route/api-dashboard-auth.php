@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminApi\AuthDashApiController;
 use App\Http\Controllers\AdminApi\HomeDashApiController;
 use App\Http\Controllers\AdminApi\MessageDashApiController;
 use App\Http\Controllers\AdminApi\RoleDashApiController;
+use App\Http\Controllers\AdminApi\UserDashApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
@@ -65,6 +66,21 @@ Route::middleware(['auth:sanctum', 'type.admin'])->group(function () {
         Route::get('/{role}', [RoleDashApiController::class, 'show'])->middleware('check.role:ReadRole');
     });
     # # # # # # # # # # # # # # # End Roles # # # # # # # # # # # # # # # 
+
+
+    # # # # # # # # # # # # # # # Users App # # # # # # # # # # # # # # # 
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', [UserDashApiController::class, 'index'])->middleware('check.role:ReadUser');
+        Route::get('/{user}', [UserDashApiController::class, 'show'])->middleware('check.role:ReadUser');
+        Route::post('/', [UserDashApiController::class, 'create'])->middleware('check.role:CreateUser');
+        Route::put('/{user}/active', [UserDashApiController::class, 'active'])->middleware('check.role:ActiveUser');
+        Route::put('/{user}/disActive', [UserDashApiController::class, 'disActive'])->middleware('check.role:DisActiveUser');
+        Route::put('/{user}/banned', [UserDashApiController::class, 'banned'])->middleware('check.role:BannedUser');
+        Route::put('/{user}/reset', [UserDashApiController::class, 'resetPassword'])->middleware('check.role:ResetPasswordUser');
+    });
+    # # # # # # # # # # # # # # # End Users App # # # # # # # # # # # # # # # 
+
+
 
 
 });
