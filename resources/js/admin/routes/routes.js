@@ -12,6 +12,9 @@ import NewRole from "../pages/Roles/NewRole/NewRole.vue";
 import Role from "../pages/Roles/Role/Role.vue";
 import EditRole from "../pages/Roles/EditRole/EditRole.vue";
 import EditAdminRole from "../pages/Admins/EditAdminRole/EditAdminRole.vue";
+import Users from "../pages/Users/Users.vue";
+import User from "../pages/Users/User/User.vue";
+import NewUser from "../pages/Users/NewUser/NewUser.vue";
 
 
 import store from "../store/index";
@@ -85,6 +88,18 @@ export const routes = [
             {
                 path: "admin/role/:id/edit",
                 component: EditRole
+            },
+            {
+                path: "admin/user",
+                component: Users
+            },
+            {
+                path: "admin/user/new",
+                component: NewUser
+            },
+            {
+                path: "admin/user/:id",
+                component: User
             },
         ]
     },

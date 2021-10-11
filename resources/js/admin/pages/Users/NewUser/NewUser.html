@@ -1,0 +1,123 @@
+<div class="w-auto md:p-8 p-4">
+    <!-- Inside Page -->
+
+    <div
+        class="w-full md:px-4 px-0 pb-8 pt-2 bg-white shadow-2 rounded-lg text-lg text-gray-600 font-medium"
+    >
+        <!-- Table Header -->
+        <div
+            class="h-16 w-full border-b mb-2 px-4 flex items-center text-lg justify-between"
+        >
+            إضافة مستخدم
+
+            <router-link
+                to="/admin/user/"
+                class="back-btn w-44 h-12 rounded font-normal flex items-center justify-center cursor-pointer"
+            >
+                قائمة المستخدمين
+            </router-link>
+        </div>
+        <!-- End Table Header -->
+
+        <!-- Grid -->
+        <div class="bg-blue-600a grid lg:grid-cols-2">
+            <!-- Item -->
+            <div class="w-full px-4 py-4">
+                <div class="h-9 flex items-center text-gray-500 mr-2 text-sm">
+                    رقم الهاتف
+                </div>
+                <input
+                    v-model="formData.phone"
+                    v-on:change="validatePhone"
+                    class="h-12 w-full rounded border border-gray-200 bg-gray-50 flex items-center px-4 text-lg"
+                />
+                <div class="h-8 text-sm text-red-400 mr-2 flex items-center">
+                    {{ formValidate.phone }}
+                </div>
+            </div>
+            <!-- Item -->
+
+            <!-- Item -->
+            <div class="w-full px-4 py-4"></div>
+            <!-- Item -->
+
+            <!-- Item -->
+            <div class="w-full px-4 py-4">
+                <div class="h-9 flex items-center text-gray-500 mr-2 text-sm">
+                    الإسم
+                </div>
+                <input
+                    v-model="formData.firstname"
+                    v-on:change="validateFirstName"
+                    class="h-12 w-full rounded border border-gray-200 bg-gray-50 flex items-center px-4 text-lg"
+                />
+                <div class="h-8 text-sm text-red-400 mr-2 flex items-center">
+                    {{ formValidate.firstname }}
+                </div>
+            </div>
+            <!-- Item -->
+
+            <!-- Item -->
+            <div class="w-full px-4 py-4">
+                <div class="h-9 flex items-center text-gray-500 mr-2 text-sm">
+                    اللقب
+                </div>
+                <input
+                    v-model="formData.lastname"
+                    v-on:change="validateLastName"
+                    class="h-12 w-full rounded border border-gray-200 bg-gray-50 flex items-center px-4 text-lg"
+                />
+                <div class="h-8 text-sm text-red-400 mr-2 flex items-center">
+                    {{ formValidate.lastname }}
+                </div>
+            </div>
+            <!-- Item -->
+
+            <!-- Item -->
+            <div class="w-full px-4 py-4">
+                <div class="h-9 flex items-center text-gray-500 mr-2 text-sm">
+                    كلمة المرور
+                </div>
+                <input
+                    v-model="formData.password"
+                    v-on:change="validatePassword"
+                    class="h-12 w-full rounded border border-gray-200 bg-gray-50 flex items-center px-4 text-lg"
+                />
+                <div class="h-8 text-sm text-red-400 mr-2 flex items-center">
+                    {{ formValidate.password }}
+                </div>
+            </div>
+            <!-- Item -->
+
+            <!-- Item -->
+            <div class="w-full px-4 py-4">
+                <div class="h-9 flex items-center text-gray-500 mr-2 text-sm">
+                    تأكيد كلمة المرور
+                </div>
+                <input
+                    v-model="formData.confirmPassword"
+                    v-on:change="validateConfirmPassword"
+                    class="h-12 w-full rounded border border-gray-200 bg-gray-50 flex items-center px-4 text-lg"
+                />
+                <div class="h-8 text-sm text-red-400 mr-2 flex items-center">
+                    {{ formValidate.confirmPassword }}
+                </div>
+            </div>
+            <!-- Item -->
+        </div>
+        <!-- Grid -->
+
+        <!-- Action Part -->
+        <div class="flex items-center h-20 mx-4">
+            <div
+                @click="addUser"
+                class="btn-color-one rounded shadow px-12 h-12 w-auto flex items-center justify-center text-white text-lg cursor-pointer"
+            >
+                إضافة
+            </div>
+        </div>
+        <!-- End Action Part -->
+    </div>
+
+    <!-- End Inside Page -->
+</div>

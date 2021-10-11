@@ -44,6 +44,13 @@ export default {
                 active: false,
                 path: "/admin/role",
                 icon: "fas fa-user-shield"
+            },            {
+                id: 5,
+                name: "مستخدمي التطبيق",
+                role: "ReadUser",
+                active: false,
+                path: "/admin/user",
+                icon: "fas fa-user-shield"
             }
         ],
         menu: false,

@@ -82,5 +82,28 @@ export default {
     },
     UpdateRole(role, formData) {
         return axios.put("/api/admin/role/" + role, formData);
-    }
+    },
+
+        // ============== User Part =======================
+        GetAllUsers() {
+            return axios.get("/api/admin/user");
+        },
+        ActiveUser(user) {
+            return axios.put("/api/admin/user/" + user + "/active");
+        },
+        DisActiveUser(admin) {
+            return axios.put("/api/admin/user/" + admin + "/disActive");
+        },
+        BannedUser(user) {
+            return axios.put("/api/admin/user/" + user + "/banned");
+        },
+        ResetUserPassword(user) {
+            return axios.put("/api/admin/user/" + user + "/reset");
+        },
+        GetUserById(user) {
+            return axios.get("/api/admin/user/" + user);
+        },
+        PostNewUser(user) {
+            return axios.post("/api/admin/user/", user);
+        },
 };
