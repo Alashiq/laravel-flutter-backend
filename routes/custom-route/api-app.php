@@ -11,6 +11,11 @@ use Illuminate\Validation\ValidationException;
 Route::prefix('app')->group(function () {
 
 
+
+
+
+
+
     # # # # # # # # # # # # # # # User # # # # # # # # # # # # # # # 
     Route::group(['prefix' => 'user'], function () {
         Route::post('/create', [AuthAppApiController::class, 'create']);
@@ -21,6 +26,21 @@ Route::prefix('app')->group(function () {
 
     # # # # # # # # # # # # # # # Auth # # # # # # # # # # # # # # # 
     Route::middleware(['auth:sanctum', 'type.user'])->group(function () {
+
+
+        Route::get('/review', function(){
+        $list[0]['id']=3;
+        $list[0]['name']='عبدالسميع';
+        $list[0]['job']='محلل نظم';
+        $list[0]['photo']='http://localhost:8000/storage/assets/avatar.png';
+            return response()->json([
+                'success'=>true,
+                'message'=>'تم جلب قائمة المنتجات بنجاح',
+                'data'=>$list
+            ],204);
+        });
+
+
 
         # # # # # # # # # # # # # # # User # # # # # # # # # # # # # # # 
         Route::group(['prefix' => 'user'], function () {
