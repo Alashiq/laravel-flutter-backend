@@ -46,12 +46,13 @@ class AuthAppApiController extends Controller
             'gender' => $request['gender'],
             'state' => 1,
         ]);
+        $photo=User::where('id', $user->id)->first()->photo;
         return response()->json(['success' => true, 'message' => 'تم إنشاء هذا الحساب بنجاح',
         'user'=>[
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
             'gender' => $user->gender,
-            'photo' => $user->photo,
+            'photo' => $photo,
             'token' => $user->createToken('website', ['role:user'])->plainTextToken
         ]
     
