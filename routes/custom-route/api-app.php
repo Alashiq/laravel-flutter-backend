@@ -37,7 +37,7 @@ Route::prefix('app')->group(function () {
                 'success'=>true,
                 'message'=>'تم جلب قائمة المنتجات بنجاح',
                 'data'=>$list
-            ],204);
+            ],200);
         });
 
 

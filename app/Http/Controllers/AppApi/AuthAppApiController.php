@@ -19,7 +19,8 @@ use function PHPUnit\Framework\isEmpty;
 class AuthAppApiController extends Controller
 {
     // Sign Up
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         if (Validator::make($request->all(), [
             'phone' => 'unique:users',
         ])->fails()) {
@@ -46,21 +47,22 @@ class AuthAppApiController extends Controller
             'gender' => $request['gender'],
             'state' => 1,
         ]);
-        $photo=User::where('id', $user->id)->first()->photo;
-        return response()->json(['success' => true, 'message' => 'تم إنشاء هذا الحساب بنجاح',
-        'user'=>[
-            'firstname' => $user->firstname,
-            'lastname' => $user->lastname,
-            'gender' => $user->gender,
-            'photo' => $photo,
-            'token' => $user->createToken('website', ['role:user'])->plainTextToken
-        ]
-    
-    ], 200);
+        $photo = User::where('id', $user->id)->first()->photo;
+        return response()->json([
+            'success' => true, 'message' => 'تم إنشاء هذا الحساب بنجاح',
+            'user' => [
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'gender' => $user->gender,
+                'photo' => $photo,
+                'token' => $user->createToken('website', ['role:user'])->plainTextToken
+            ]
+
+        ], 200);
     }
 
 
-    
+
 
 
     // Login
@@ -96,7 +98,7 @@ class AuthAppApiController extends Controller
     //  Check Auth
     public function profile(Request $request)
     {
-        $userData= $request->user()->makeHidden(['id','state','created_at','updated_at']);
+        $userData = $request->user()->makeHidden(['id', 'state', 'created_at', 'updated_at']);
 
         return response()->json(["success" => true, "message" => "مرحبا بالمستخدم", "user" => $userData]);
     }
@@ -114,7 +116,13 @@ class AuthAppApiController extends Controller
     //  Change Admin Name
     public function update(Request $request)
     {
-        if ($request->firstname) {
+        if ($request->firstname && $request->lastname) {
+            $user = $request->user()->update($request->only(
+                "firstname",
+                "lastname",
+            ));
+            return response()->json(["success" => true, "message" => "تم تحديث الإسم واللقب بنجاح", "user" => $request->user()]);
+        } elseif ($request->firstname) {
             $user = $request->user()->update($request->only(
                 "firstname"
             ));
@@ -142,11 +150,21 @@ class AuthAppApiController extends Controller
     //  Change User Photo
     public function updatePhoto(Request $request)
     {
-        if (Validator::make($request->all(), [
-            'file' => 'required',
-        ])->fails()) {
+
+
+
+        if (!$request->hasFile('file')) {
             return response()->json(["success" => false, "message" => "يجب عليك إختيار صورة ليتم رفعها"], 400);
         }
+
+
+
+
+        // if (Validator::make($request->all(), [
+        //     'file' => 'required',
+        // ])->fails()) {
+        //     return response()->json(["success" => false, "message" => "يجب عليك إختيار صورة ليتم رفعها"], 400);
+        // }
 
 
         if (Validator::make($request->all(), [
