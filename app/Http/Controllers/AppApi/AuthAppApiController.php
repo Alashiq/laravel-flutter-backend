@@ -39,6 +39,12 @@ class AuthAppApiController extends Controller
             return response()->json(["success" => false, "message" => "يجب عليك ادخال كلمة مرور"], 400);
         }
 
+        if($request['gender']==1||$request['gender']=='1'){
+            $request['gender']=true;
+        }else{
+            $request['gender']=false;
+        }
+
         $user = User::create([
             'firstname' => $request['firstname'],
             'lastname' => $request['lastname'],
